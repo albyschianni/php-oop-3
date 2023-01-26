@@ -126,23 +126,23 @@ class Persona {
         $this -> codiceFiscale = $codiceFiscale;
     }
 
-    public function getHmtlPersona(){
+    public function getHtmlPersona(){
 
-        return $this->nome . "<br>" .
-            $this->cognome . "<br>" .
-            $this->dataDiNascita . "<br>" .
-            $this->luogoDiNascita . "<br>" .
-            $this->codiceFiscale;
+        return "Nome: " . $this->nome . "<br>" .
+            "Cognome: " . $this->cognome . "<br>" .
+            "Data di Nascita: " . $this->dataDiNascita . "<br>" .
+            "Luogo di Nascita: " . $this->luogoDiNascita . "<br>" .
+            "Codice Fiscale: " . $this->codiceFiscale;
     }
 }
 
 class Impiegato extends Persona {
 
     private $dataDiAssunzione;
-    private $stipendio;
+    private Stipendio $stipendio;
     
 
-    public function __construct($nome, $cognome, $dataDiNascita, $luogoDiNascita, $codiceFiscale, $dataDiAssunzione, Stipendio $stipendio ){
+    public function __construct($nome, $cognome, $dataDiNascita, $luogoDiNascita, $codiceFiscale, $dataDiAssunzione, Stipendio $stipendio){
 
         parent::__construct($nome, $cognome, $dataDiNascita, $luogoDiNascita, $codiceFiscale);
 
@@ -163,11 +163,18 @@ class Impiegato extends Persona {
 
         return $this -> stipendio;
     }
-    public function setStipendio($stipendio){
+    public function setStipendio(Stipendio $stipendio){
         
         $this -> stipendio = $stipendio;
     }
 
+    public function getHtmlImpiegato(){
+
+        return parent:: getHtmlPersona() . "<br>" .
+            "Stipendio annuale: " . $this->getStipendio()->getStipendioAnnuale() . "<br>" .
+            "Data di assunzione: " . $this->getDataDiAssunzione();
+
+    }
 }
 
 class Capo extends Persona {
@@ -201,18 +208,29 @@ class Capo extends Persona {
         
         $this -> bonus = $bonus;
     }
+
+    public function getRedditoAnuale(){
+
+        return $this->dividendo * 12 + $this->bonus;
+    }
+
+    public function getHtmlCapo(){
+
+        return parent:: getHtmlPersona() . "<br>" .
+               "Dividendo: " . $this -> dividendo . "<br>" .
+               "Bonus: " . $this -> bonus . "<br>" .
+               "Reddito Annuale: " . $this-> getRedditoAnuale();
+    }
 }
 
 
-$persona1 = new Persona("luca", "rossi", "12-03-2020", "Varese", "SCHLRT99M09L382V");
+$impiegato1 = new Impiegato("Luca", "Rossi", "12-03-1970", "Varese", "SCHLRT99M09L382V","12-10-1990", new Stipendio(1500,true,true));
 
-echo $persona1 -> getHmtlPersona();
-
-echo  "<br><br> " ;
-
-$stipendio1 = new Stipendio("1500", 1, 1);
-
-echo $stipendio1->getHmtlStipendio();
-
+echo $impiegato1 -> getHtmlImpiegato();
 
 echo  "<br><br> " ;
+
+$capo1 = new Capo("Luciano", "Maggi", "12-3-1970", "Milano", "CJBCJENCICNE99", 2500, 10000);
+
+echo $capo1->getHtmlCapo();
+
