@@ -39,7 +39,30 @@ class Stipendio {
         
         $this -> quattordicesima = $quattordicesima;
     }
+
+    public function getStipendioAnnuale(){
+
+        $mesi = 12;
+        if ($this->tredicesima){
+            $mesi += 1;
+
+            if ($this->quattordicesima){
+                $mesi += 1;
+            }
+        }
+        return $mesi * $this->mensile;
+    }
+
+    public function getHmtlStipendio(){
+
+        return "mensile" . $this->getMensile() . "<br>" .
+            "tredicesima" . $this->getTredicesima() . "<br>" .
+            "quattordicesima" . $this->getQuattordicesima() . "<br>" .
+            "stipendio annuo" . $this->getStipendioAnnuale();        
+    }
 }
+
+
 
 class Persona {
 
@@ -102,6 +125,15 @@ class Persona {
         
         $this -> codiceFiscale = $codiceFiscale;
     }
+
+    public function getHmtlPersona(){
+
+        return $this->nome . "<br>" .
+            $this->cognome . "<br>" .
+            $this->dataDiNascita . "<br>" .
+            $this->luogoDiNascita . "<br>" .
+            $this->codiceFiscale;
+    }
 }
 
 class Impiegato extends Persona {
@@ -115,7 +147,7 @@ class Impiegato extends Persona {
         parent::__construct($nome, $cognome, $dataDiNascita, $luogoDiNascita, $codiceFiscale);
 
         $this -> setDataDiAssunzione($dataDiAssunzione);
-        // $this -> setStipendio($stipendio);
+        $this -> setStipendio($stipendio);
     }
 
     public function getDataDiAssunzione() {
@@ -127,15 +159,14 @@ class Impiegato extends Persona {
         $this -> dataDiAssunzione = $dataDiAssunzione;
     }
 
-    // public function getStipendio() {
+    public function getStipendio() {
 
-    //     return $this -> stipendio;
-    // }
-    // public function setStipendio($stipendio){
+        return $this -> stipendio;
+    }
+    public function setStipendio($stipendio){
         
-    //     $this -> stipendio = $stipendio;
-    // }
-
+        $this -> stipendio = $stipendio;
+    }
 
 }
 
@@ -171,3 +202,17 @@ class Capo extends Persona {
         $this -> bonus = $bonus;
     }
 }
+
+
+$persona1 = new Persona("luca", "rossi", "12-03-2020", "Varese", "SCHLRT99M09L382V");
+
+echo $persona1 -> getHmtlPersona();
+
+echo  "<br><br> " ;
+
+$stipendio1 = new Stipendio("1500", 1, 1);
+
+echo $stipendio1->getHmtlStipendio();
+
+
+echo  "<br><br> " ;
